@@ -28,7 +28,7 @@ public class Servidor {
             ventana.setVisible(true);
             ServerSocket server = new ServerSocket(8000);
             Socket s;
-            Boolean loginReg = false;
+            boolean loginReg = false;
 
             ventana.imprimirDatos("Inici correcte");
             while (true) {
