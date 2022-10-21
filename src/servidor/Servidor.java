@@ -41,16 +41,19 @@ public class Servidor {
                 //DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
                 while (!loginReg) {
+                    String user = in.readUTF();
+                    String password = in.readUTF();
                     loginReg = in.readBoolean();
                     Boolean reg = false;
 
                     if (!loginReg) {
-
-                        String user = in.readUTF();
-                        String password = in.readUTF();
                         reg = in.readBoolean();
+                        
 
                         if (reg) {
+                            
+                            user = in.readUTF();
+                            password = in.readUTF();
                             users_.addUser(user, password);
                             ventana.imprimirDatos("La ip " + s.getInetAddress() + " ha creat el nom dusuari "
                                     + user + " amb el password " + password);
@@ -58,9 +61,6 @@ public class Servidor {
                         }
 
                     } else {
-
-                        String user = in.readUTF();
-                        String password = in.readUTF();
 
                         ventana.imprimirDatos("La ip " + s.getInetAddress() + " ha intentat entrar amb el nom dusuari "
                                 + user + " amb el password " + password);
