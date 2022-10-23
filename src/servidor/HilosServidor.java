@@ -43,8 +43,8 @@ public class HilosServidor extends Thread {
                 for (i = 0; i < users_.getUsers().size(); i++) {
                     if (users_.getUsers().get(i).equals(user)) {
                         if (users_.getPasswords().get(i).equals(password)) {
-                            ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + users_.getPasswords().get(i) + " ");
                             out.writeBoolean(true);
+                            ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + users_.getPasswords().get(i) + " ");
                             comprovacio = in.readBoolean();
                         }
                     }
