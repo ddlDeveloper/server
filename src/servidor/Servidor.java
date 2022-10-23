@@ -21,6 +21,7 @@ public class Servidor {
         // TODO code application logic here
 
         Users users_ = new Users();
+        users_.addUser("lluis", "daniel");
 
         try {
 
@@ -48,10 +49,9 @@ public class Servidor {
 
                     if (!loginReg) {
                         reg = in.readBoolean();
-                        
 
                         if (reg) {
-                            
+
                             user = in.readUTF();
                             password = in.readUTF();
                             users_.addUser(user, password);
