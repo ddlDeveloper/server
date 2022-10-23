@@ -5,6 +5,7 @@
 package servidor;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -37,11 +38,13 @@ public class HilosServidor extends Thread {
         while (!comprovacio) {
             try {
                 DataInputStream in = new DataInputStream(s.getInputStream());
+                DataOutputStream out = new DataOutputStream(s.getOutputStream());
                 int i;
                 for (i = 0; i < users_.getUsers().size(); i++) {
                     if (users_.getUsers().get(i).equals(user)) {
                         if (users_.getPasswords().get(i).equals(password)) {
                             ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + users_.getPasswords().get(i) + " ");
+                            out.writeBoolean(true);
                             comprovacio = in.readBoolean();
                         }
                     }
