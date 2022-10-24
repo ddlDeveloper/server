@@ -101,8 +101,8 @@ public class VentanaServidor extends javax.swing.JFrame {
         });
     }
  public void imprimirDatos(String string) {
-        
-        jTextArea1.setText(jTextArea1.getText() + string);
+     
+        jTextArea1.setText(jTextArea1.getText() + string + "\n");
         
     }   
     

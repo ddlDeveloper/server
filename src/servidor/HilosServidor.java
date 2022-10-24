@@ -37,16 +37,19 @@ public class HilosServidor extends Thread {
         
         while (!comprovacio) {
             try {
+                
                 DataInputStream in = new DataInputStream(s.getInputStream());
                 DataOutputStream out = new DataOutputStream(s.getOutputStream());
                 int i;
                 for (i = 0; i < users_.getUsers().size(); i++) {
                     if (users_.getUsers().get(i).equals(user)) {
                         if (users_.getPasswords().get(i).equals(password)) {
-                            out.writeBoolean(true);
-                            ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + users_.getPasswords().get(i) + " ");
+                            out.writeInt(1);
+                            ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
                             comprovacio = in.readBoolean();
                         }
+                    } else {
+                        out.writeInt(0);
                     }
 
                 }

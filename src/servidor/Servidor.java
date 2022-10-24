@@ -5,6 +5,7 @@
 package servidor;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,7 +40,9 @@ public class Servidor {
                 ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + " ");
 
                 DataInputStream in = new DataInputStream(s.getInputStream());
-                //DataOutputStream out = new DataOutputStream(s.getOutputStream());
+                DataOutputStream out = new DataOutputStream(s.getOutputStream());
+                
+                out.writeUTF("Connectat");
 
                 while (!loginReg) {
                     String user = in.readUTF();
