@@ -23,13 +23,13 @@ public class Servidor {
 
         Users users_ = new Users();
         users_.addUser("lluis", "daniel");
+        Socket s;
 
         try {
 
             VentanaServidor ventana = new VentanaServidor();
             ventana.setVisible(true);
             ServerSocket server = new ServerSocket(8000);
-            Socket s;
             boolean loginReg = false;
 
             ventana.imprimirDatos("Inici correcte");
@@ -41,7 +41,7 @@ public class Servidor {
 
                 DataInputStream in = new DataInputStream(s.getInputStream());
                 DataOutputStream out = new DataOutputStream(s.getOutputStream());
-                
+
                 out.writeUTF("Connectat");
 
                 while (!loginReg) {
@@ -70,10 +70,15 @@ public class Servidor {
 
                         HilosServidor hilo = new HilosServidor(s, user, password, ventana, users_);
                         hilo.start();
+                        hilo.join();
                     }
                 }
+
+                in.close();
+                out.close();
+                s.close();
             }
-        } catch (IOException ex) {
+        } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
 

@@ -56,6 +56,8 @@ public class HilosServidor extends Thread {
                 if (comprovacio) {
                     ventana.imprimirDatos("Ha fet logout el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
                     comprovacio = false;
+                    in.close();
+                    out.close();
                     s.close();
                 }
 
