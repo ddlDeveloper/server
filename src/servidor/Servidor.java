@@ -28,6 +28,8 @@ public class Servidor extends Thread {
     DataOutputStream out = null;
     String password;
     boolean loginReg = false;
+    int index = 0;
+    int indicador = 0;
 
     public static void main(String[] args) {
         // TODO code application logic here
@@ -115,21 +117,26 @@ public class Servidor extends Thread {
                         for (i = 0; i < users_.getUsers().size(); i++) {
                             if (users_.getUsers().get(i).equals(user)) {
                                 if (users_.getPasswords().get(i).equals(password)) {
-                                    out.writeInt(1);
+                                    index = index + 1;
+                                    indicador = index;
+                                    out.writeInt(index);
                                     ventana.imprimirDatos("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
-                                    comprovacio = in.readBoolean();
+                                    out.writeUTF("Ha accedit el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
+                                    String text = in.readUTF();
+                                    ventana.imprimirDatos(text);
+                                    String text2 = in.readUTF();
+                                    ventana.imprimirDatos(text2);
+                                    ventana.imprimirDatos("Ha fet logout el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
+                                    comprovacio = false;
+                                    in.close();
+                                    out.close();
+                                    s.close();
                                 }
-                            } else {
-                                out.writeInt(0);
                             }
 
                         }
-                        if (comprovacio) {
-                            ventana.imprimirDatos("Ha fet logout el usuari " + users_.getUsers().get(i) + " amb ip " + s.getInetAddress() + " password " + users_.getPasswords().get(i) + " ");
-                            comprovacio = false;
-                            in.close();
-                            out.close();
-                            s.close();
+                        if (indicador == 0) {
+                            out.writeInt(indicador);
                         }
 
                     } catch (IOException ex) {
