@@ -37,6 +37,7 @@ public class Servidor extends Thread {
         try {
 
             users_.addUser("lluis", "daniel");
+            users_.addUser("david", "miro");
             ventana.setVisible(true);
             ServerSocket server = new ServerSocket(8000);
 
