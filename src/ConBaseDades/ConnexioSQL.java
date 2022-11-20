@@ -19,15 +19,16 @@ public class ConnexioSQL {
     //Login init = new Login();
     public static Connection conectar = null;
 
-    public static String url = "jdbc:postgresql://localhost:5432/postgres";
-    public static String user = "admin";
-    public static String passwd = "password";
+    public static String url = "jdbc:postgresql://localhost:5432/DDL";
+    public static String user = "postgres";
+    public static String passwd = "1234qwer";
     public static String clase = "org.postgresql.Driver";
 
     public static Connection establirConexio() {
         try {
             Class.forName(clase);
             conectar = DriverManager.getConnection(url, user, passwd);
+            //conectar.setAutoCommit(true);
             System.out.println("Connexió establerta a la base de dades");
             //JOptionPane.showMessageDialog(null, "Connexió establerta a la base de dades");
         } catch (ClassNotFoundException | SQLException e) {
