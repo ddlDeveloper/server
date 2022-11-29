@@ -4,13 +4,14 @@
  */
 package servidor;
 
-import ConBaseDades.MetodesSQL;
+import ConBaseDades.Connexio;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-//import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,36 +19,52 @@ import java.util.logging.Logger;
  *
  * @author david
  */
-public class Servidor extends Thread {
+public class Servidor {
 
-    static Socket s;
-    int comprovacio = 0;
-    static VentanaServidor ventana = new VentanaServidor();
-    static Users users;
-    static MetodesSQL metodes;
+    //static Users users_ = new Users();
 
-    DataInputStream in = null;
-    DataOutputStream out = null;
-    String password;
-    boolean loginReg = false;
-    static int index = 0;
-    int indicador = 0;
+    private HashMap<Integer, String> usuaris = new HashMap<>();
+    Connexio connexio = new Connexio();
 
+    public HashMap<Integer, String> getUsuaris() {
+        return usuaris;
+    }
+
+    public void setUsuaris(HashMap<Integer, String> usuaris) {
+        this.usuaris = usuaris;
+    }
+    private static Socket s;
+    private ServerSocket server;
+    //boolean comprovacio = false;
+    private static VentanaServidor ventana = new VentanaServidor();
+
+    //static DataInputStream in = null;
+    //static DataOutputStream out = null;
+    //String password;
+    //boolean loginReg = false;
+    //int index = 0;
+    //int indicador = 0;
+/*
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        
 
         try {
 
             //users_.addUser("lluis", "daniel");
             //users_.addUser("david", "miro");
             ventana.setVisible(true);
-            ServerSocket server = new ServerSocket(8000);
+            server = new ServerSocket(8000);
 
             ventana.imprimirDatos("Inici correcte");
             while (true) {
 
                 s = server.accept();
-                Servidor servidor = new Servidor();
+
+                in = new DataInputStream(s.getInputStream());
+                out = new DataOutputStream(s.getOutputStream());
+                HilosServidor servidor = new HilosServidor(s, in, out, ventana, );
                 servidor.start();
 
             }
@@ -56,140 +73,107 @@ public class Servidor extends Thread {
         }
 
     }
+    */
+    public Servidor(int port) throws IOException {
 
-    @Override
-    public void run() {
-
-        ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + " ");
-
-        try {
-            in = new DataInputStream(s.getInputStream());
-            out = new DataOutputStream(s.getOutputStream());
-            out.writeUTF("Connectat");
-        } catch (IOException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (!loginReg) {
-            String user = "";
-            try {
-                user = in.readUTF();
-                password = in.readUTF();
-                loginReg = in.readBoolean();
-            } catch (IOException ex) {
-                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            Boolean reg = false;
-
-            if (!loginReg) {
-                try {
-                    out.writeUTF("Preparat per a desar dades");
-                    reg = in.readBoolean();
-                    out.writeBoolean(reg);
-                } catch (IOException ex) {
-                    Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                if (reg) {
-
-                    try {
-                        //ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-                        //boolean activacio = in.readBoolean();
-                        //out.writeBoolean(activacio);
-                        String user_ = in.readUTF();
-                        String password_ = in.readUTF();
-                        String nom = in.readUTF();
-                        String cognom = in.readUTF();
-                        String correu = in.readUTF();
-                        String DNI = in.readUTF();
-                        String tarjetaBancaria = in.readUTF();
-                        String carrer = in.readUTF();
-                        String municipi = in.readUTF();
-                        String provincia = in.readUTF();
-                        String nacionalitat = in.readUTF();
-                        String IBAN = in.readUTF();
-                        String Telefon = in.readUTF();
-                        String codiPostal = in.readUTF();
-                        metodes.createrUser(user_, password_, nom, cognom, correu, DNI, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, IBAN, Telefon, codiPostal);
-                        out.writeUTF("Registre correcte");
-                        //user = in.readUTF();
-                        //password = in.readUTF();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    ventana.imprimirDatos("La ip " + s.getInetAddress() + " ha creat el nom dusuari "
-                            + user + " amb el password " + password);
-                    loginReg = false;
-                }
-
-            } else {
-
-                ventana.imprimirDatos("La ip " + s.getInetAddress() + " ha intentat entrar amb el nom dusuari "
-                        + user + " amb el password " + password);
-
-                //HilosServidor hilo = new HilosServidor(s, user, password, ventana, users_);
-                //hilo.start();
-                //hilo.join();
-                while (comprovacio == 0) {
-                    try {
-
-                        //DataInputStream in = new DataInputStream(s.getInputStream());
-                        //DataOutputStream out = new DataOutputStream(s.getOutputStream());
-                        //int i;
-                        //for (i = 0; i < users_.getUsers().size(); i++) {
-                        //if (users_.getUsers().get(i).equals(user)) {
-                        //if (users_.getPasswords().get(i).equals(password)) {
-                        MetodesSQL.searchUserRegistered(user, password); 
-
-                            index = index + 1;
-                            indicador = index;
-                            out.writeInt(index);
-                            ventana.imprimirDatos("Ha accedit el usuari " + user + " amb ip " + s.getInetAddress() + " password " + user + " ");
-                            out.writeUTF("Ha accedit el usuari " + user + " amb ip " + s.getInetAddress() + " password " + user + " ");
-                            String text = in.readUTF();
-                            ventana.imprimirDatos(text);
-                            String text2 = in.readUTF();
-                            ventana.imprimirDatos(text2);
-                            comprovacio = in.readInt();
-                            switch (comprovacio) {
-                                case 1 -> {
-                                    comprovacio = 0;
-                                    ventana.imprimirDatos("Ha fet logout el usuari " + user + " amb ip " + s.getInetAddress() + " password " + " ");
-
-                                    break;
-                                }
-                                case 2 -> {
-                                }
-                                
-                                default -> {
-                                }
-                            }
-                            
-                            in.close();
-                            out.close();
-                            s.close();
-                        
-
-                        if (indicador == 0) {
-                            out.writeInt(indicador);
-                        }
-
-                    } catch (IOException ex) {
-                        Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
-
-        try {
-            in.close();
-            out.close();
-            s.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        server = new ServerSocket(port);
+        ventana.setVisible(true);
 
     }
 
+    public void esborrar(int id, String nomClient) {
+        //Esborrar el usuari i la seva sessió al HasMap
+        usuaris.remove(id, nomClient);
+
+    }
+
+    private void afegir(int id, String nomClient) {
+        //Afegim el usuari i la seva sessió al HasMap
+        usuaris.put(id, nomClient);
+
+    }
+
+    public void obrirServer() throws IOException, SQLException {
+
+        //Establir la connexió a la BD's  
+        //Connexio conn = new Connexio();
+        connexio.establirConnexio();
+
+        //Afegim el usuari i la seva sessió al HasMap
+        try {
+
+            
+            while (true) {
+
+                s = server.accept();
+
+                DataInputStream in = new DataInputStream(s.getInputStream());
+                DataOutputStream out = new DataOutputStream(s.getOutputStream());
+                
+                ventana.imprimirDatos("Inici correcte");
+
+                //Missatge de benvinguda al establir la comunicació
+                out.writeUTF("Inici correcte");
+                ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + " ");
+
+                //Recullir el login de l'usuari
+                //format LOGIN,usuari,contrasenya,id_conn
+                String resposta = in.readUTF();
+                ventana.imprimirDatos("Sha obtingut la resposta " + resposta + ".");
+                //Descompondre la resposta del client, en un array
+                String[] missatge = resposta.split(",");
+                //missatge[0] - LOGIN
+                //missatge[1] - usuari
+                //missatge[2] - password
+                //missatge[3] - id_conn
+
+                //Convertir el camp id_com string a numeric
+                int id_conn = Integer.parseInt(missatge[3]);
+
+                //Mira si l'usuari existeix a la Bd's i si la contrasenya és vàlida
+                int registres = connexio.loginValit(missatge[1], missatge[2]);
+                
+                
+                out.writeInt(id_conn);
+
+                //Si id_conn == 0 està fent la pantalla de LOGIN
+                if (id_conn == 0) {
+                    //El ususari ha fet el login correcte
+                    if (registres == 1) {
+
+                        //Gereno un id_conn nou aleatori
+                        int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
+
+                        //Afegim el usuari i la seva sessió al HasMap
+                        afegir(new_id_conn, missatge[1]);
+                        //Enviem el ID# assignat a l'usuari, al servidor
+                        out.writeInt(new_id_conn);
+                        ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
+                        //Enviar el rol que té l'usuari.
+                        int rol = connexio.rolUsuari(missatge[1], missatge[2]);
+                        out.writeInt(rol);
+
+                    } else {
+                        //No te ID i el usuari / contrasenya no es correcte
+                        //Enviem el ID# assignat a l'usuari -ID = 0 ERROR
+                        out.writeInt(0);
+                        ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
+                    }
+                } else {
+                    //Te id
+                    // Iniciem el fil amb el client
+                    HilosServidor hilo = new HilosServidor(s, in, out, missatge[1], id_conn, this, ventana);
+                    hilo.start();
+                }
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Tanquem el fil
+        s.close();
+        //Tanquem la connexió a la Bd's
+        connexio.tancarConexio();
+    }
+    
 }

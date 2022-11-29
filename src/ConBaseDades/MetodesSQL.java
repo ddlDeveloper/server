@@ -103,13 +103,20 @@ public class MetodesSQL {
             }
             
 */
-            conexio = ConnexioSQL.establirConexio();
+            //conexio = ConnexioSQL.establirConexio();
             String sentenciaBuscarUser = ("SELECT user, password FROM users_login WHERE user = '" + user + "' && password = '" + passwd + "'");
             //sentenciaBuscarUser = ("SELECT Nom,Usuari,Contrasenya FROM User WHERE Usuari = '" + user + "' && Contrasenya = '" + passwd + "'");
             sentence_ready = conexio.prepareStatement(sentenciaBuscarUser);
             result = sentence_ready.executeQuery();
             
-            search_user = "Correcte";
+            //search_user = "Correcte";
+            
+            if (result.next()) {
+                search_user = "Correcte";
+                //search_user = user;
+            } else {
+                search_user = "Usuari no trobat";
+            }
             
 /*
             if (result.next()) {
