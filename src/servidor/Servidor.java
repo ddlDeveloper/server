@@ -118,23 +118,24 @@ public class Servidor {
 
                 //Recullir el login de l'usuari
                 //format LOGIN,usuari,contrasenya,id_conn
-                String resposta = in.readUTF();
-                ventana.imprimirDatos("Sha obtingut la resposta " + resposta + ".");
+                String user = in.readUTF();
+                String password = in.readUTF();
+                int login = in.readInt();
+                ventana.imprimirDatos("Sha intentat loguejar " + user + " amb el password " + password + ".");
                 //Descompondre la resposta del client, en un array
-                String[] missatge = resposta.split(",");
+                //String[] missatge = resposta.split(",");
                 //missatge[0] - LOGIN
                 //missatge[1] - usuari
                 //missatge[2] - password
                 //missatge[3] - id_conn
 
                 //Convertir el camp id_com string a numeric
-                int id_conn = Integer.parseInt(missatge[3]);
-
+                int id_conn = login;
                 //Mira si l'usuari existeix a la Bd's i si la contrasenya és vàlida
-                int registres = connexio.loginValit(missatge[1], missatge[2]);
+                int registres = connexio.loginValit(user, password);
                 
                 
-                out.writeInt(id_conn);
+                out.writeInt(registres);
 
                 //Si id_conn == 0 està fent la pantalla de LOGIN
                 if (id_conn == 0) {
@@ -145,12 +146,12 @@ public class Servidor {
                         int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
 
                         //Afegim el usuari i la seva sessió al HasMap
-                        afegir(new_id_conn, missatge[1]);
+                        afegir(new_id_conn, user);
                         //Enviem el ID# assignat a l'usuari, al servidor
                         out.writeInt(new_id_conn);
                         ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
                         //Enviar el rol que té l'usuari.
-                        int rol = connexio.rolUsuari(missatge[1], missatge[2]);
+                        int rol = connexio.rolUsuari(user, password);
                         out.writeInt(rol);
 
                     } else {
@@ -162,8 +163,10 @@ public class Servidor {
                 } else {
                     //Te id
                     // Iniciem el fil amb el client
-                    HilosServidor hilo = new HilosServidor(s, in, out, missatge[1], id_conn, this, ventana);
+                    if (registres != 0) {
+                    HilosServidor hilo = new HilosServidor(s, in, out, user, password, id_conn, this, ventana);
                     hilo.start();
+                    }
                 }
 
             }

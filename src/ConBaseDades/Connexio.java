@@ -46,21 +46,22 @@ public class Connexio {
     public int loginValit(String usuari, String contrasenya) throws SQLException {
         int cont = 0;
 
-        String query = "select * from user_data where Usuari = " + "'" + usuari + "'" + " and Contrasenya = '" + contrasenya + "'";
+        String query = "select * from user_data where usuari = " + "'" + usuari + "'" + " and contrasenya = '" + contrasenya + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);
-        System.out.println("registres trobats cont: " + cont);
+        
         while (result.next()) {
             cont++;
         }
+        System.out.println("registres trobats cont: " + cont);
         return cont;
     }
 
     public int rolUsuari(String usuari, String contrasenya) throws SQLException {
         int rol = 0;
 
-        String query = "select rol from user_data where Usuari = " + "'" + usuari + "'" + " and Contrasenya = '" + contrasenya + "'";
+        String query = "select rol from user_data where usuari = " + "'" + usuari + "'" + " and contrasenya = '" + contrasenya + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);

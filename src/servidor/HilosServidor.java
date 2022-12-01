@@ -27,7 +27,8 @@ public class HilosServidor extends Thread {
     //Users users_ = new Users();
     private DataInputStream in = null;
     private DataOutputStream out = null;
-    private String nomClient;
+    private String usuari;
+    private String password;
     private int id;
     private Servidor servidor;
 
@@ -35,11 +36,12 @@ public class HilosServidor extends Thread {
     //int index = 0;
     //int indicador = 0;
 
-    public HilosServidor(Socket s, DataInputStream in, DataOutputStream out, String nomClient, int id, Servidor servidor, VentanaServidor ventana) {
+    public HilosServidor(Socket s, DataInputStream in, DataOutputStream out, String usuari, String password, int id, Servidor servidor, VentanaServidor ventana) {
         this.s = s;
         this.in = in;
         this.out = out;
-        this.nomClient = nomClient;
+        this.usuari = usuari;
+        this.password = password;
         this.id = id;
         this.servidor = servidor;
         this.ventana = ventana;
@@ -49,7 +51,9 @@ public class HilosServidor extends Thread {
     @Override
     public void run() {
 
-        ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + " ");
+        ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + ".");
+        ventana.imprimirDatos("Ha iniciat la sessió el usuari " + usuari + " amb el password " + password + ".");
+                        
         try {
 
                 Boolean salir = false;
@@ -57,22 +61,25 @@ public class HilosServidor extends Thread {
                 while (!salir) {
                     try {
                         //Recullo la petició codificada que fa el client
-                        String resposta = in.readUTF();
+                        int resposta = in.readInt();
+                        
+                        
                         //Descomposar la resposta
-                        String[] missatge = resposta.split(",");
+                        //String[] missatge = resposta.split(",");
                         // - - - S E R V I D O R  ---
-                        switch (missatge[0]) {
-                            case "0":
+                        switch (resposta) {
+                            case 0:
                                 salir = true;
+                                ventana.imprimirDatos("Ha fet logout el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
                                 break;
 
-                            case "1":
+                            case 1:
                                 break;
 
-                            case "2":
+                            case 2:
                                 break;
 
-                            case "EXIT":
+                            case 3:
                                 break;
 
                             default:
