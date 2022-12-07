@@ -17,7 +17,7 @@ public class Connexio {
     String user = "postgres";
     String passwd = "1234qwer";
     String bd = "DDL";
-    String ip = "localhost";
+    String ip = "127.0.0.1";
     String port = "5432";
 
     String cadena = "jdbc:postgresql://" + ip + "/" + bd;
@@ -98,5 +98,29 @@ public class Connexio {
         }
 
     }
+    
+    public int crearUsuariBD (String id, String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
+        int correcte = 0;
+
+        String query =  "INSERT INTO user_data(" +
+                            "	id, usuari, contrasenya, nom, cognom, correu, dni, tarjeta_bancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codi_postal, rol)\n" +
+                            "	VALUES ('"+id+"', '"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+dni+"', '"+tarjetaBancaria+"', '"+carrer+"', '"+municipi+"', '"+provincia+"', '"+nacionalitat+"', '"+iban+"', '"+telefon+"', '"+codiPostal+"', '"+rol+"');";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre afegit.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha afegit cap registre.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
+  
+        
 
 }

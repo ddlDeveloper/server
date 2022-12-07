@@ -8,9 +8,12 @@ import ConBaseDades.Connexio;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +25,6 @@ import java.util.logging.Logger;
 public class Servidor {
 
     //static Users users_ = new Users();
-
     private HashMap<Integer, String> usuaris = new HashMap<>();
     Connexio connexio = new Connexio();
 
@@ -73,7 +75,7 @@ public class Servidor {
         }
 
     }
-    */
+     */
     public Servidor(int port) throws IOException {
 
         server = new ServerSocket(port);
@@ -93,6 +95,52 @@ public class Servidor {
 
     }
 
+    public int altaUsuaris(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String id = in.readUTF();
+                    String usuari = in.readUTF();
+                    String password = in.readUTF();
+                    String nom = in.readUTF();
+                    String cognom = in.readUTF();
+                    String correu = in.readUTF();
+                    String dni = in.readUTF();
+                    String tarjetaBancaria = in.readUTF();
+                    String carrer = in.readUTF();
+                    String municipi = in.readUTF();
+                    String provincia = in.readUTF();
+                    String nacionalitat = in.readUTF();
+                    String iban = in.readUTF();
+                    String telefon = in.readUTF();
+                    String codiPostal = in.readUTF();
+                    String rol = in.readUTF();
+
+                    correcte = connexio.crearUsuariBD(id, usuari, password, nom, cognom, correu, dni, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codiPostal, rol);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Alta dusuari correcta.");
+                        System.out.println("Alta dusuari correcta.");
+                        out.writeUTF("Alta dusuari correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut crear el usuari.");
+                        System.out.println("No sha pogut crear el usuari.");
+                        out.writeUTF("No sha pogut crear el usuari.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
     public void obrirServer() throws IOException, SQLException {
 
         //Establir la connexió a la BD's  
@@ -102,18 +150,17 @@ public class Servidor {
         //Afegim el usuari i la seva sessió al HasMap
         try {
 
-            
             while (true) {
 
                 s = server.accept();
 
                 DataInputStream in = new DataInputStream(s.getInputStream());
                 DataOutputStream out = new DataOutputStream(s.getOutputStream());
-                
-                ventana.imprimirDatos("Inici correcte");
+
+                ventana.imprimirDatos("Connexio correcta.");
 
                 //Missatge de benvinguda al establir la comunicació
-                out.writeUTF("Inici correcte");
+                out.writeUTF("Connexio correcta.");
                 ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + " ");
 
                 //Recullir el login de l'usuari
@@ -133,39 +180,39 @@ public class Servidor {
                 int id_conn = login;
                 //Mira si l'usuari existeix a la Bd's i si la contrasenya és vàlida
                 int registres = connexio.loginValit(user, password);
-                
-                
+
                 out.writeInt(registres);
 
                 //Si id_conn == 0 està fent la pantalla de LOGIN
                 if (id_conn == 0) {
                     //El ususari ha fet el login correcte
-                    if (registres == 1) {
+                    //if (registres == 1) {
 
                         //Gereno un id_conn nou aleatori
-                        int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
-
+                        //int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
                         //Afegim el usuari i la seva sessió al HasMap
-                        afegir(new_id_conn, user);
+                        altaUsuaris(in, out);
                         //Enviem el ID# assignat a l'usuari, al servidor
-                        out.writeInt(new_id_conn);
-                        ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
+                        //out.writeInt(new_id_conn);
+                        //ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
                         //Enviar el rol que té l'usuari.
                         int rol = connexio.rolUsuari(user, password);
                         out.writeInt(rol);
 
-                    } else {
+                    //} else {
                         //No te ID i el usuari / contrasenya no es correcte
                         //Enviem el ID# assignat a l'usuari -ID = 0 ERROR
-                        out.writeInt(0);
-                        ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
-                    }
+                        //out.writeInt(0);
+                        //ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
+                    //}
                 } else {
                     //Te id
                     // Iniciem el fil amb el client
-                    if (registres != 0) {
-                    HilosServidor hilo = new HilosServidor(s, in, out, user, password, id_conn, this, ventana);
-                    hilo.start();
+                    if (registres > 0) {
+                        HilosServidor hilo = new HilosServidor(s, in, out, user, password, id_conn, this, ventana);
+                        hilo.start();
+                    } else {
+                        ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
                     }
                 }
 
@@ -178,5 +225,5 @@ public class Servidor {
         //Tanquem la connexió a la Bd's
         connexio.tancarConexio();
     }
-    
+
 }
