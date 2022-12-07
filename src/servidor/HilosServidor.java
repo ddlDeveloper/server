@@ -57,7 +57,6 @@ public class HilosServidor extends Thread {
         try {
 
                 Boolean salir = false;
-                // - - - S E R V E R  T I Q  I S S U E S - - -
                 while (!salir) {
                     try {
                         //Recullo la petició codificada que fa el client
@@ -66,7 +65,6 @@ public class HilosServidor extends Thread {
                         
                         //Descomposar la resposta
                         //String[] missatge = resposta.split(",");
-                        // - - - S E R V I D O R  ---
                         switch (resposta) {
                             case 0:
                                 salir = true;
