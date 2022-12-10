@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,6 @@ public class HilosServidor extends Thread {
     //String password;
     VentanaServidor ventana = new VentanaServidor();
 
-    
     //Users users_ = new Users();
     private DataInputStream in = null;
     private DataOutputStream out = null;
@@ -35,7 +35,6 @@ public class HilosServidor extends Thread {
     //boolean loginReg = false;
     //int index = 0;
     //int indicador = 0;
-
     public HilosServidor(Socket s, DataInputStream in, DataOutputStream out, String usuari, String password, int id, Servidor servidor, VentanaServidor ventana) {
         this.s = s;
         this.in = in;
@@ -47,50 +46,57 @@ public class HilosServidor extends Thread {
         this.ventana = ventana;
     }
 
-   
     @Override
     public void run() {
 
         ventana.imprimirDatos("Sha obert connexio amb la ip " + s.getInetAddress() + ".");
         ventana.imprimirDatos("Ha iniciat la sessió el usuari " + usuari + " amb el password " + password + ".");
-                        
+
         try {
 
-                Boolean salir = false;
-                while (!salir) {
-                    try {
-                        //Recullo la petició codificada que fa el client
-                        int resposta = in.readInt();
-                        
-                        
-                        //Descomposar la resposta
-                        //String[] missatge = resposta.split(",");
-                        switch (resposta) {
-                            case 0:
-                                salir = true;
-                                ventana.imprimirDatos("Ha fet logout el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
-                                break;
+            Boolean salir = false;
+            while (!salir) {
+                try {
+                    //Recullo la petició codificada que fa el client
+                    int resposta = in.readInt();
 
-                            case 1:
-                                break;
+                    //Descomposar la resposta
+                    //String[] missatge = resposta.split(",");
+                    switch (resposta) {
+                        case 0:
+                            salir = true;
+                            ventana.imprimirDatos("Ha fet logout el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
+                            break;
 
-                            case 2:
-                                break;
+                        case 1:
+                            int baixa = servidor.baixaUsuaris(in, out);
+                            if (baixa > 0) {
+                                ventana.imprimirDatos("Sha donat de baixa el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
+                            } else {
+                                ventana.imprimirDatos("No sha pogut eliminar el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
+                            }
+                            salir = true;
+                            break;
 
-                            case 3:
-                                break;
+                        case 2:
+                            break;
 
-                            default:
-                        }
-                    } catch (IOException ex) {
+                        case 3:
+                            break;
+
+                        default:
                     }
+                } catch (IOException ex) {
+                } catch (SQLException ex) {
+                    Logger.getLogger(HilosServidor.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                s.close();
-                //Registrar en el logs el llistat de tots els usuaris guardats al map
-
-            } catch (IOException ex) {
-                Logger.getLogger(HilosServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
+            s.close();
+            //Registrar en el logs el llistat de tots els usuaris guardats al map
+
+        } catch (IOException ex) {
+            Logger.getLogger(HilosServidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

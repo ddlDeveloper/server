@@ -225,5 +225,40 @@ public class Servidor {
         //Tanquem la connexió a la Bd's
         connexio.tancarConexio();
     }
+    
+    public int baixaUsuaris(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String usuari = in.readUTF();
+                    String password = in.readUTF();
+
+                    correcte = connexio.eliminarUsuariBD(usuari, password);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Baixa dusuari correcta.");
+                        System.out.println("Baixa dusuari correcta.");
+                        out.writeUTF("Baixa dusuari correcta.");
+                        out.writeInt(1);
+                    } else {
+                        ventana.imprimirDatos("No sha pogut eliminar el usuari.");
+                        System.out.println("No sha pogut eliminar el usuari.");
+                        out.writeUTF("No sha pogut eliminar el usuari.");
+                        out.writeInt(0);
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
 
 }

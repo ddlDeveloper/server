@@ -121,6 +121,29 @@ public class Connexio {
         return correcte;
     }
   
+      public int eliminarUsuariBD (String usuari, String password) throws SQLException {
+        int correcte = 0;
+
+        if (loginValit(usuari, password) > 0) {
+        String query =  "DELETE FROM user_data WHERE " +
+                            " usuari LIKE '"+usuari+"';";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
         
+        if (result > 0) {
+            System.out.println("Registre eliminat.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha eliminat cap registre.");
+            correcte = 0;
+        }
+        } else {
+            System.out.println("No existeix el registre.");
+            correcte = 0;
+        }
+        
+        return correcte;
+    }  
 
 }
