@@ -93,7 +93,7 @@ public class Servidor {
                 if (in.readBoolean() == true) {
                     out.writeBoolean(true);
 
-                    String id = in.readUTF();
+                    //String id = in.readUTF();
                     String usuari = in.readUTF();
                     String password = in.readUTF();
                     String nom = in.readUTF();
@@ -219,6 +219,7 @@ public class Servidor {
         //Establir la connexió a la BD's  
         //Connexio conn = new Connexio();
         connexio.establirConnexio();
+        int rol = 0;
 
         //Afegim el usuari i la seva sessió al HasMap
         try {
@@ -253,13 +254,14 @@ public class Servidor {
                 int id_conn = login;
                 //Mira si l'usuari existeix a la Bd's i si la contrasenya és vàlida
                 int registres = connexio.loginValit(user, password);
-                out.writeInt(registres);
 
-                int rol = connexio.rolUsuari(user, password);
-                out.writeInt(rol);
-                System.out.println("El rol es " + rol + ".");
+                if (id_conn == 1) {
+                    rol = connexio.rolUsuari(user, password);
+                    out.writeInt(rol);
+                    System.out.println("El rol es " + rol + ".");
+                    
+                }
                 out.writeInt(registres);
-
                 //Si id_conn == 0 està fent la pantalla de LOGIN
                 if (id_conn == 0) {
                     //El ususari ha fet el login correcte
