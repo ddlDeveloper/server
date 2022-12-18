@@ -57,11 +57,41 @@ public class Connexio {
         System.out.println("registres trobats cont: " + cont);
         return cont;
     }
+    
+    public int clientValit(String dni) throws SQLException {
+        int cont = 0;
+
+        String query = "select * from clients where dni = '" + dni + "'";
+        Statement stmt = conectar.createStatement();
+
+        ResultSet result = stmt.executeQuery(query);
+        
+        while (result.next()) {
+            cont++;
+        }
+        System.out.println("registres trobats cont: " + cont);
+        return cont;
+    }
+
+    public int reservaValida(String dni) throws SQLException {
+        int cont = 0;
+
+        String query = "select * from reserves where dni = '" + dni + "'";
+        Statement stmt = conectar.createStatement();
+
+        ResultSet result = stmt.executeQuery(query);
+        
+        while (result.next()) {
+            cont++;
+        }
+        System.out.println("registres trobats cont: " + cont);
+        return cont;
+    }
 
     public int rolUsuari(String usuari, String contrasenya) throws SQLException {
         int rol = 0;
 
-        String query = "select rol from user_data where usuari = " + "'" + usuari + "'" + " and contrasenya = '" + contrasenya + "'";
+        String query = "select rol from user_data where usuari = '" + usuari + "' and contrasenya = '" + contrasenya + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);
@@ -99,12 +129,12 @@ public class Connexio {
 
     }
     
-    public int crearUsuariBD (String id, String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
+    public int crearUsuari (String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
         int correcte = 0;
 
         String query =  "INSERT INTO user_data(" +
-                            "	id, usuari, contrasenya, nom, cognom, correu, dni, tarjeta_bancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codi_postal, rol)\n" +
-                            "	VALUES ('"+id+"', '"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+dni+"', '"+tarjetaBancaria+"', '"+carrer+"', '"+municipi+"', '"+provincia+"', '"+nacionalitat+"', '"+iban+"', '"+telefon+"', '"+codiPostal+"', '"+rol+"');";
+                            "	usuari, contrasenya, nom, cognom, correu, dni, tarjeta_bancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codi_postal, rol)\n" +
+                            "	VALUES ('"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+dni+"', '"+tarjetaBancaria+"', '"+carrer+"', '"+municipi+"', '"+provincia+"', '"+nacionalitat+"', '"+iban+"', '"+telefon+"', '"+codiPostal+"', '"+rol+"');";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -120,8 +150,52 @@ public class Connexio {
         
         return correcte;
     }
+    
+    public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex, String dni) throws SQLException {
+        int correcte = 0;
+
+        String query =  "INSERT INTO reserves(\n" +
+"	name, \"lastName\", \"docType\", \"numDoc\", address, phone, email, acces, \"user\", password, sex, dni)\n" +
+"	VALUES ('"+name+"', '"+lastName+"', '"+docType+"', '"+numDoc+"', '"+address+"', '"+phone+"', '"+email+"', '"+acces+"', '"+user+"', '"+password+"', '"+sex+"', '"+dni+"');";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre de reserva afegit.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha afegit cap reserva.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
+    
+    public int crearClient (String nacionality, String address, String buscar, String email, String iban, String idpersona, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
+        int correcte = 0;
+
+        String query =  "INSERT INTO clients(\n" +
+"	nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province)\n" +
+"	VALUES ('"+nacionality+"', '"+address+"', '"+buscar+"', '"+email+"', '"+iban+"', '"+idpersona+"', '"+lastname+"', '"+municipality+"', '"+name+"', '"+num_document+"', '"+phone+"', '"+postalcode+"', '"+province+"');";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre de client afegit.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha afegit cap client.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
   
-      public int eliminarUsuariBD (String usuari, String password) throws SQLException {
+      public int eliminarUsuari (String usuari, String password) throws SQLException {
         int correcte = 0;
 
         if (loginValit(usuari, password) > 0) {
@@ -132,18 +206,69 @@ public class Connexio {
         int result = stmt.executeUpdate(query);
         
         if (result > 0) {
-            System.out.println("Registre eliminat.");
+            System.out.println("Usuari eliminat.");
             correcte = 1;
         } else {
-            System.out.println("No sha eliminat cap registre.");
+            System.out.println("No sha eliminat cap usuari.");
             correcte = 0;
         }
         } else {
-            System.out.println("No existeix el registre.");
+            System.out.println("No existeix el usuari.");
             correcte = 0;
         }
         
         return correcte;
     }  
 
+      public int eliminarClient (String dni) throws SQLException {
+        int correcte = 0;
+
+        if (clientValit(dni) > 0) {
+        String query =  "DELETE FROM clients\n" +
+"	WHERE dni LIKE '"+dni+"';";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Client eliminat.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha eliminat cap client.");
+            correcte = 0;
+        }
+        } else {
+            System.out.println("No existeix el client.");
+            correcte = 0;
+        }
+        
+        return correcte;
+    }  
+
+      public int eliminarReserva (String dni) throws SQLException {
+        int correcte = 0;
+
+        if (reservaValida(dni) > 0) {
+        String query =  "DELETE FROM reserves \n" +
+"	WHERE dni LIKE '"+dni+"';";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Reserva eliminada.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha eliminat cap reserva.");
+            correcte = 0;
+        }
+        } else {
+            System.out.println("No existeix la reserva.");
+            correcte = 0;
+        }
+        
+        return correcte;
+    }  
+
+      
 }

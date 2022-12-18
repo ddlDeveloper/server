@@ -4,6 +4,7 @@
  */
 package servidor;
 
+import ConBaseDades.Connexio;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class HilosServidor extends Thread {
     private String password;
     private int id;
     private Servidor servidor;
+    private Connexio connexio;
 
     //boolean loginReg = false;
     //int index = 0;
@@ -55,10 +57,15 @@ public class HilosServidor extends Thread {
         try {
 
             Boolean salir = false;
+
             while (!salir) {
                 try {
                     //Recullo la petició codificada que fa el client
                     int resposta = in.readInt();
+                    int delad;
+                    int delete;
+                    int update;
+                    int alta;
 
                     //Descomposar la resposta
                     //String[] missatge = resposta.split(",");
@@ -69,20 +76,114 @@ public class HilosServidor extends Thread {
                             break;
 
                         case 1:
-                            int baixa = servidor.baixaUsuaris(in, out);
-                            if (baixa > 0) {
-                                ventana.imprimirDatos("Sha donat de baixa el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
+                            int baixa;
+                            delad = in.readInt();
+                            if (delad == 1) {
+
+                                baixa = servidor.baixaUsuaris(in, out);
                             } else {
+
+                                baixa = 2;
+                            }
+                            if (baixa == 0) {
+                                ventana.imprimirDatos("Sha donat de baixa el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
+                            } else if (baixa == 1) {
                                 ventana.imprimirDatos("No sha pogut eliminar el usuari " + usuari + " amb password " + password + "." + " amb ip " + s.getInetAddress() + ".");
                             }
                             salir = true;
                             break;
 
                         case 2:
+                            delad = in.readInt();
+                        switch (delad) {
+                            case 1:
+                                alta = servidor.altaClients(in, out);
+                                delete = 2;
+                                update = 2;
+                                break;
+                            case 2:
+                                delete = servidor.baixaClients(in, out);
+                                alta = 2;
+                                update = 2;
+                                break;
+                            case 3:
+                                update = servidor.altaClients(in, out); //update
+                                alta = 2;
+                                delete = 2;
+                                break;
+                            default:
+                                alta = 2;
+                                delete = 2;
+                                update = 2;
+                                break;
+                        }
+                            if (alta == 0) {
+                                ventana.imprimirDatos("Sha donat de alta el client corresponent");
+                            } else if (alta == 1) {
+                                ventana.imprimirDatos("No sha pogut donar de alta el client");
+                            }
+
+                            if (delete == 0) {
+                                ventana.imprimirDatos("Sha donat de baixa el client corresponent");
+                            } else if (delete == 1) {
+                                ventana.imprimirDatos("No sha pogut eliminar el client");
+                            }
+
+                            if (update == 0) {
+                                ventana.imprimirDatos("Sha modificat el client corresponent");
+                            } else if (update == 1) {
+                                ventana.imprimirDatos("No sha pogut modificar el client");
+                            }
+
+                            salir = true;
                             break;
 
+
                         case 3:
+                            delad = in.readInt();
+                        switch (delad) {
+                            case 1:
+                                alta = servidor.altaReserves(in, out);
+                                delete = 2;
+                                update = 2;
+                                break;
+                            case 2:
+                                delete = servidor.baixaReserves(in, out);
+                                alta = 2;
+                                update = 2;
+                                break;
+                            case 3:
+                                update = servidor.altaReserves(in, out);
+                                alta = 2;
+                                delete = 2;
+                                break;
+                            default:
+                                alta = 2;
+                                delete = 2;
+                                update = 2;
+                                break;
+                        }
+                            if (alta == 0) {
+                                ventana.imprimirDatos("Sha donat de alta la reserva corresponent");
+                            } else if (alta == 1) {
+                                ventana.imprimirDatos("No sha pogut donar de alta la reserva");
+                            }
+
+                            if (delete == 0) {
+                                ventana.imprimirDatos("Sha donat de baixa la reserva corresponent");
+                            } else if (delete == 1) {
+                                ventana.imprimirDatos("No sha pogut eliminar la reserva");
+                            }
+
+                            if (update == 0) {
+                                ventana.imprimirDatos("Sha modificat la reserva corresponent");
+                            } else if (update == 1) {
+                                ventana.imprimirDatos("No sha pogut modificar la reserva");
+                            }
+
+                            salir = true;
                             break;
+
 
                         default:
                     }

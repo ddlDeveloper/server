@@ -83,18 +83,6 @@ public class Servidor {
 
     }
 
-    public void esborrar(int id, String nomClient) {
-        //Esborrar el usuari i la seva sessió al HasMap
-        usuaris.remove(id, nomClient);
-
-    }
-
-    private void afegir(int id, String nomClient) {
-        //Afegim el usuari i la seva sessió al HasMap
-        usuaris.put(id, nomClient);
-
-    }
-
     public int altaUsuaris(DataInputStream in, DataOutputStream out) throws SQLException {
 
         int correcte = 0;
@@ -122,7 +110,7 @@ public class Servidor {
                     String codiPostal = in.readUTF();
                     String rol = in.readUTF();
 
-                    correcte = connexio.crearUsuariBD(id, usuari, password, nom, cognom, correu, dni, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codiPostal, rol);
+                    correcte = connexio.crearUsuari(usuari, password, nom, cognom, correu, dni, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codiPostal, rol);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Alta dusuari correcta.");
                         System.out.println("Alta dusuari correcta.");
@@ -131,6 +119,91 @@ public class Servidor {
                         ventana.imprimirDatos("No sha pogut crear el usuari.");
                         System.out.println("No sha pogut crear el usuari.");
                         out.writeUTF("No sha pogut crear el usuari.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+    
+    public int altaReserves(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String name = in.readUTF();
+                    String lastName = in.readUTF();
+                    String docType = in.readUTF();
+                    String numDoc = in.readUTF();
+                    String address = in.readUTF();
+                    String phone = in.readUTF();
+                    String email = in.readUTF();
+                    String acces = in.readUTF();
+                    String user = in.readUTF();
+                    String password = in.readUTF();
+                    String sex = in.readUTF();
+                    String dni = in.readUTF();
+
+                    correcte = connexio.crearReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex, dni);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Alta de reserva correcta.");
+                        System.out.println("Alta de reserva correcta.");
+                        out.writeUTF("Alta de reserva correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut crear la reserva.");
+                        System.out.println("No sha pogut crear la reserva.");
+                        out.writeUTF("No sha pogut crear la reserva.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+    
+    public int altaClients (DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String nacionality = in.readUTF();
+                    String address = in.readUTF();
+                    String buscar = in.readUTF();
+                    String email = in.readUTF();
+                    String iban = in.readUTF();
+                    String idpersona = in.readUTF();
+                    String lastname = in.readUTF();
+                    String municipality = in.readUTF();
+                    String name = in.readUTF();
+                    String num_document = in.readUTF();
+                    String phone = in.readUTF();
+                    String postalcode = in.readUTF();
+                    String province = in.readUTF();
+
+                    correcte = connexio.crearClient(nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Alta de client correcta.");
+                        System.out.println("Alta de client correcta.");
+                        out.writeUTF("Alta de client correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut crear el client.");
+                        System.out.println("No sha pogut crear el client.");
+                        out.writeUTF("No sha pogut crear el client.");
                     }
 
                 }
@@ -197,6 +270,7 @@ public class Servidor {
                         //ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
                         //Enviar el rol que té l'usuari.
                         int rol = connexio.rolUsuari(user, password);
+                        System.out.println(rol);
                         out.writeInt(rol);
 
                     //} else {
@@ -239,7 +313,7 @@ public class Servidor {
                     String usuari = in.readUTF();
                     String password = in.readUTF();
 
-                    correcte = connexio.eliminarUsuariBD(usuari, password);
+                    correcte = connexio.eliminarUsuari(usuari, password);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Baixa dusuari correcta.");
                         System.out.println("Baixa dusuari correcta.");
@@ -249,6 +323,74 @@ public class Servidor {
                         ventana.imprimirDatos("No sha pogut eliminar el usuari.");
                         System.out.println("No sha pogut eliminar el usuari.");
                         out.writeUTF("No sha pogut eliminar el usuari.");
+                        out.writeInt(0);
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
+    public int baixaClients(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String dni = in.readUTF();
+                    //String password = in.readUTF();
+
+                    correcte = connexio.eliminarClient(dni);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Baixa de client correcta.");
+                        System.out.println("Baixa de client correcta.");
+                        out.writeUTF("Baixa de client correcta.");
+                        out.writeInt(1);
+                    } else {
+                        ventana.imprimirDatos("No sha pogut eliminar el client.");
+                        System.out.println("No sha pogut eliminar el client.");
+                        out.writeUTF("No sha pogut eliminar el client.");
+                        out.writeInt(0);
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
+    public int baixaReserves (DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String dni = in.readUTF();
+                    //String password = in.readUTF();
+
+                    correcte = connexio.eliminarClient(dni);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Baixa de reserva correcta.");
+                        System.out.println("Baixa de reserva correcta.");
+                        out.writeUTF("Baixa de reserva correcta.");
+                        out.writeInt(1);
+                    } else {
+                        ventana.imprimirDatos("No sha pogut eliminar la reserva.");
+                        System.out.println("No sha pogut eliminar la reserva.");
+                        out.writeUTF("No sha pogut eliminar el client.");
                         out.writeInt(0);
                     }
 
