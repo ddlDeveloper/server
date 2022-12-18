@@ -128,7 +128,7 @@ public class Servidor {
         }
         return correcte;
     }
-    
+
     public int altaReserves(DataInputStream in, DataOutputStream out) throws SQLException {
 
         int correcte = 0;
@@ -170,8 +170,8 @@ public class Servidor {
         }
         return correcte;
     }
-    
-    public int altaClients (DataInputStream in, DataOutputStream out) throws SQLException {
+
+    public int altaClients(DataInputStream in, DataOutputStream out) throws SQLException {
 
         int correcte = 0;
         try {
@@ -253,7 +253,11 @@ public class Servidor {
                 int id_conn = login;
                 //Mira si l'usuari existeix a la Bd's i si la contrasenya és vàlida
                 int registres = connexio.loginValit(user, password);
+                out.writeInt(registres);
 
+                int rol = connexio.rolUsuari(user, password);
+                out.writeInt(rol);
+                System.out.println("El rol es " + rol + ".");
                 out.writeInt(registres);
 
                 //Si id_conn == 0 està fent la pantalla de LOGIN
@@ -261,23 +265,23 @@ public class Servidor {
                     //El ususari ha fet el login correcte
                     //if (registres == 1) {
 
-                        //Gereno un id_conn nou aleatori
-                        //int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
-                        //Afegim el usuari i la seva sessió al HasMap
-                        altaUsuaris(in, out);
-                        //Enviem el ID# assignat a l'usuari, al servidor
-                        //out.writeInt(new_id_conn);
-                        //ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
-                        //Enviar el rol que té l'usuari.
-                        int rol = connexio.rolUsuari(user, password);
-                        System.out.println(rol);
-                        out.writeInt(rol);
+                    //Gereno un id_conn nou aleatori
+                    //int new_id_conn = (int) Math.floor((Math.random() * (900 - 100 + 1) + (100)));
+                    //Afegim el usuari i la seva sessió al HasMap
+                    altaUsuaris(in, out);
+                    //Enviem el ID# assignat a l'usuari, al servidor
+                    //out.writeInt(new_id_conn);
+                    //ventana.imprimirDatos("Sha enviat la id " + new_id_conn + ".");
+                    //Enviar el rol que té l'usuari.
+                    rol = connexio.rolUsuari(user, password);
+                    System.out.println(rol);
+                    out.writeInt(rol);
 
                     //} else {
-                        //No te ID i el usuari / contrasenya no es correcte
-                        //Enviem el ID# assignat a l'usuari -ID = 0 ERROR
-                        //out.writeInt(0);
-                        //ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
+                    //No te ID i el usuari / contrasenya no es correcte
+                    //Enviem el ID# assignat a l'usuari -ID = 0 ERROR
+                    //out.writeInt(0);
+                    //ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
                     //}
                 } else {
                     //Te id
@@ -299,7 +303,7 @@ public class Servidor {
         //Tanquem la connexió a la Bd's
         connexio.tancarConexio();
     }
-    
+
     public int baixaUsuaris(DataInputStream in, DataOutputStream out) throws SQLException {
 
         int correcte = 0;
@@ -368,7 +372,7 @@ public class Servidor {
         return correcte;
     }
 
-    public int baixaReserves (DataInputStream in, DataOutputStream out) throws SQLException {
+    public int baixaReserves(DataInputStream in, DataOutputStream out) throws SQLException {
 
         int correcte = 0;
         try {
@@ -401,6 +405,5 @@ public class Servidor {
         }
         return correcte;
     }
-
 
 }
