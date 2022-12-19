@@ -107,7 +107,7 @@ public class HilosServidor extends Thread {
                                 update = 2;
                                 break;
                             case 3:
-                                update = servidor.altaClients(in, out); //update
+                                update = servidor.updateClients(in, out); //update
                                 alta = 2;
                                 delete = 2;
                                 break;
@@ -153,7 +153,7 @@ public class HilosServidor extends Thread {
                                 update = 2;
                                 break;
                             case 3:
-                                update = servidor.altaReserves(in, out);
+                                update = servidor.updateReserves(in, out);
                                 alta = 2;
                                 delete = 2;
                                 break;

@@ -151,6 +151,8 @@ public class Connexio {
         return correcte;
     }
     
+    
+    
     public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex, String dni) throws SQLException {
         int correcte = 0;
 
@@ -269,6 +271,72 @@ public class Connexio {
         
         return correcte;
     }  
+      
+      public int updateUsuari (String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
+        int correcte = 0;
+
+        String query =  "UPDATE user_data\n" +
+"	SET usuari='"+usuari+"', contrasenya='"+password+"', nom='"+nom+"', cognom='"+cognom+"', correu='"+correu+"', dni='"+dni+"', tarjeta_bancaria='"+tarjetaBancaria+"', carrer='"+carrer+"', municipi='"+municipi+"', provincia='"+provincia+"', nacionalitat='"+nacionalitat+"', iban='"+iban+"', telefon='"+telefon+"', codi_postal='"+codiPostal+"', rol='"+rol+"'\n" +
+"	WHERE dni ='"+dni+"');";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre modificat.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha modificat cap registre.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
+      
+      public int updateClient (String nacionality, String address, String buscar, String email, String iban, String idpersona, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
+        int correcte = 0;
+
+        String query =  "UPDATE clients\n" +
+"	SET nacionality='"+nacionality+"', address='"+address+"', buscar='"+buscar+"', email='"+email+"', iban='"+iban+"', dni='"+idpersona+"', lastname='"+lastname+"', municipality='"+municipality+"', name='"+name+"', num_document='"+num_document+"', phone='"+phone+"', postalcode='"+postalcode+"', province='"+province+"'\n" +
+"	WHERE dni = '"+idpersona+"'";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre modificat.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha modificat cap registre.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
+      
+      public int updateReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex, String dni) throws SQLException {
+        int correcte = 0;
+
+        String query =  "UPDATE reserves\n" +
+"	SET name='"+name+"', \"lastName\"='"+lastName+"', \"docType\"='"+docType+"', \"numDoc\"='"+numDoc+"', address='"+address+"', phone='"+phone+"', email='"+email+"', acces='"+acces+"', \"user\"='"+user+"', password='"+password+"', sex='"+sex+"', dni='"+dni+"'\n" +
+"	WHERE dni = '"+dni+"';";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre modificat.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha modificat cap registre.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
 
       
 }

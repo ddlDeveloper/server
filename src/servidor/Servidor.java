@@ -407,5 +407,137 @@ public class Servidor {
         }
         return correcte;
     }
+    
+    public int updateUsuaris(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    //String id = in.readUTF();
+                    String usuari = in.readUTF();
+                    String password = in.readUTF();
+                    String nom = in.readUTF();
+                    String cognom = in.readUTF();
+                    String correu = in.readUTF();
+                    String dni = in.readUTF();
+                    String tarjetaBancaria = in.readUTF();
+                    String carrer = in.readUTF();
+                    String municipi = in.readUTF();
+                    String provincia = in.readUTF();
+                    String nacionalitat = in.readUTF();
+                    String iban = in.readUTF();
+                    String telefon = in.readUTF();
+                    String codiPostal = in.readUTF();
+                    String rol = in.readUTF();
+
+                    correcte = connexio.updateUsuari(usuari, password, nom, cognom, correu, dni, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codiPostal, rol);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Modificacio dusuari correcta.");
+                        System.out.println("Modificacio dusuari correcta.");
+                        out.writeUTF("Modificacio dusuari correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut modifica el usuari.");
+                        System.out.println("No sha pogut modificar el usuari.");
+                        out.writeUTF("No sha pogut modificar el usuari.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
+    public int updateReserves(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String name = in.readUTF();
+                    String lastName = in.readUTF();
+                    String docType = in.readUTF();
+                    String numDoc = in.readUTF();
+                    String address = in.readUTF();
+                    String phone = in.readUTF();
+                    String email = in.readUTF();
+                    String acces = in.readUTF();
+                    String user = in.readUTF();
+                    String password = in.readUTF();
+                    String sex = in.readUTF();
+                    String dni = in.readUTF();
+
+                    correcte = connexio.updateReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex, dni);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Modificacio de reserva correcta.");
+                        System.out.println("Modificacio de reserva correcta.");
+                        out.writeUTF("Modificacio de reserva correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut modificar la reserva.");
+                        System.out.println("No sha pogut modificar la reserva.");
+                        out.writeUTF("No sha pogut modificar la reserva.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
+    public int updateClients(DataInputStream in, DataOutputStream out) throws SQLException {
+
+        int correcte = 0;
+        try {
+            if (in.readInt() == 1) {
+                out.writeInt(1);
+
+                if (in.readBoolean() == true) {
+                    out.writeBoolean(true);
+
+                    String nacionality = in.readUTF();
+                    String address = in.readUTF();
+                    String buscar = in.readUTF();
+                    String email = in.readUTF();
+                    String iban = in.readUTF();
+                    String idpersona = in.readUTF();
+                    String lastname = in.readUTF();
+                    String municipality = in.readUTF();
+                    String name = in.readUTF();
+                    String num_document = in.readUTF();
+                    String phone = in.readUTF();
+                    String postalcode = in.readUTF();
+                    String province = in.readUTF();
+
+                    correcte = connexio.updateClient(nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province);
+                    if (correcte > 0) {
+                        ventana.imprimirDatos("Modificacio de client correcta.");
+                        System.out.println("Modificacio de client correcta.");
+                        out.writeUTF("Modificacio de client correcta.");
+                    } else {
+                        ventana.imprimirDatos("No sha pogut modificar el client.");
+                        System.out.println("No sha pogut modificar el client.");
+                        out.writeUTF("No sha pogut modificar el client.");
+                    }
+
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return correcte;
+    }
+
 
 }
