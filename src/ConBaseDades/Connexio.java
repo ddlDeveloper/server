@@ -73,10 +73,10 @@ public class Connexio {
         return cont;
     }
 
-    public int reservaValida(String dni) throws SQLException {
+    public int reservaValida(String numDoc) throws SQLException {
         int cont = 0;
 
-        String query = "select * from reserves where dni = '" + dni + "'";
+        String query = "select * from reserves where numDoc = '" + numDoc + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);
@@ -153,12 +153,12 @@ public class Connexio {
     
     
     
-    public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex, String dni) throws SQLException {
+    public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
         int correcte = 0;
 
         String query =  "INSERT INTO reserves(\n" +
-"	name, \"lastName\", \"docType\", \"numDoc\", address, phone, email, acces, \"user\", password, sex, dni)\n" +
-"	VALUES ('"+name+"', '"+lastName+"', '"+docType+"', '"+numDoc+"', '"+address+"', '"+phone+"', '"+email+"', '"+acces+"', '"+user+"', '"+password+"', '"+sex+"', '"+dni+"');";
+"	name, \"lastName\", \"docType\", \"numDoc\", address, phone, email, acces, \"user\", password, sex)\n" +
+"	VALUES ('"+name+"', '"+lastName+"', '"+docType+"', '"+numDoc+"', '"+address+"', '"+phone+"', '"+email+"', '"+acces+"', '"+user+"', '"+password+"', '"+sex+"');";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -175,12 +175,12 @@ public class Connexio {
         return correcte;
     }
     
-    public int crearClient (String nacionality, String address, String buscar, String email, String iban, String idpersona, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
+    public int crearClient (String nacionality, String address, String email, String iban, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
         int correcte = 0;
 
         String query =  "INSERT INTO clients(\n" +
 "	nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province)\n" +
-"	VALUES ('"+nacionality+"', '"+address+"', '"+buscar+"', '"+email+"', '"+iban+"', '"+idpersona+"', '"+lastname+"', '"+municipality+"', '"+name+"', '"+num_document+"', '"+phone+"', '"+postalcode+"', '"+province+"');";
+"	VALUES ('"+nacionality+"', '"+address+"', '"+email+"', '"+iban+"', '"+lastname+"', '"+municipality+"', '"+name+"', '"+num_document+"', '"+phone+"', '"+postalcode+"', '"+province+"');";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -222,12 +222,12 @@ public class Connexio {
         return correcte;
     }  
 
-      public int eliminarClient (String dni) throws SQLException {
+      public int eliminarClient (String num_document) throws SQLException {
         int correcte = 0;
 
-        if (clientValit(dni) > 0) {
+        if (clientValit(num_document) > 0) {
         String query =  "DELETE FROM clients\n" +
-"	WHERE dni LIKE '"+dni+"';";
+"	WHERE num_document LIKE '"+num_document+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -247,12 +247,12 @@ public class Connexio {
         return correcte;
     }  
 
-      public int eliminarReserva (String dni) throws SQLException {
+      public int eliminarReserva (String numDoc) throws SQLException {
         int correcte = 0;
 
-        if (reservaValida(dni) > 0) {
+        if (reservaValida(numDoc) > 0) {
         String query =  "DELETE FROM reserves \n" +
-"	WHERE dni LIKE '"+dni+"';";
+"	WHERE numDoc LIKE '"+numDoc+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -294,12 +294,12 @@ public class Connexio {
         return correcte;
     }
       
-      public int updateClient (String nacionality, String address, String buscar, String email, String iban, String idpersona, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
+      public int updateClient (String nacionality, String address, String email, String iban, String lastname, String municipality, String name, String num_document, String phone, String postalcode, String province) throws SQLException {
         int correcte = 0;
 
         String query =  "UPDATE clients\n" +
-"	SET nacionality='"+nacionality+"', address='"+address+"', buscar='"+buscar+"', email='"+email+"', iban='"+iban+"', dni='"+idpersona+"', lastname='"+lastname+"', municipality='"+municipality+"', name='"+name+"', num_document='"+num_document+"', phone='"+phone+"', postalcode='"+postalcode+"', province='"+province+"'\n" +
-"	WHERE dni = '"+idpersona+"'";
+"	SET nacionality='"+nacionality+"', address='"+address+"', email='"+email+"', iban='"+iban+"', lastname='"+lastname+"', municipality='"+municipality+"', name='"+name+"', num_document='"+num_document+"', phone='"+phone+"', postalcode='"+postalcode+"', province='"+province+"'\n" +
+"	WHERE num_document = '"+num_document+"'";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -316,12 +316,12 @@ public class Connexio {
         return correcte;
     }
       
-      public int updateReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex, String dni) throws SQLException {
+      public int updateReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
         int correcte = 0;
 
         String query =  "UPDATE reserves\n" +
-"	SET name='"+name+"', \"lastName\"='"+lastName+"', \"docType\"='"+docType+"', \"numDoc\"='"+numDoc+"', address='"+address+"', phone='"+phone+"', email='"+email+"', acces='"+acces+"', \"user\"='"+user+"', password='"+password+"', sex='"+sex+"', dni='"+dni+"'\n" +
-"	WHERE dni = '"+dni+"';";
+"	SET name='"+name+"', \"lastName\"='"+lastName+"', \"docType\"='"+docType+"', \"numDoc\"='"+numDoc+"', address='"+address+"', phone='"+phone+"', email='"+email+"', acces='"+acces+"', \"user\"='"+user+"', password='"+password+"', sex='"+sex+"'\n" +
+"	WHERE numDoc = '"+numDoc+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);

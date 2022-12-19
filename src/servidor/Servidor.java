@@ -152,7 +152,7 @@ public class Servidor {
                     String sex = in.readUTF();
                     String dni = in.readUTF();
 
-                    correcte = connexio.crearReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex, dni);
+                    correcte = connexio.crearReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Alta de reserva correcta.");
                         System.out.println("Alta de reserva correcta.");
@@ -195,7 +195,7 @@ public class Servidor {
                     String postalcode = in.readUTF();
                     String province = in.readUTF();
 
-                    correcte = connexio.crearClient(nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province);
+                    correcte = connexio.crearClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Alta de client correcta.");
                         System.out.println("Alta de client correcta.");
@@ -350,10 +350,10 @@ public class Servidor {
                 if (in.readBoolean() == true) {
                     out.writeBoolean(true);
 
-                    String dni = in.readUTF();
+                    String numero_document = in.readUTF();
                     //String password = in.readUTF();
 
-                    correcte = connexio.eliminarClient(dni);
+                    correcte = connexio.eliminarClient(numero_document);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Baixa de client correcta.");
                         System.out.println("Baixa de client correcta.");
@@ -384,10 +384,10 @@ public class Servidor {
                 if (in.readBoolean() == true) {
                     out.writeBoolean(true);
 
-                    String dni = in.readUTF();
+                    String numDoc = in.readUTF();
                     //String password = in.readUTF();
 
-                    correcte = connexio.eliminarClient(dni);
+                    correcte = connexio.eliminarReserva(numDoc);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Baixa de reserva correcta.");
                         System.out.println("Baixa de reserva correcta.");
@@ -477,7 +477,7 @@ public class Servidor {
                     String sex = in.readUTF();
                     String dni = in.readUTF();
 
-                    correcte = connexio.updateReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex, dni);
+                    correcte = connexio.updateReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Modificacio de reserva correcta.");
                         System.out.println("Modificacio de reserva correcta.");
@@ -520,7 +520,7 @@ public class Servidor {
                     String postalcode = in.readUTF();
                     String province = in.readUTF();
 
-                    correcte = connexio.updateClient(nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province);
+                    correcte = connexio.updateClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Modificacio de client correcta.");
                         System.out.println("Modificacio de client correcta.");
