@@ -184,6 +184,50 @@ public class HilosServidor extends Thread {
                             salir = true;
                             break;
 
+                        case 4:
+                            delad = in.readInt();
+                        switch (delad) {
+                            case 1:
+                                alta = servidor.altaUsuaris(in, out);
+                                delete = 2;
+                                update = 2;
+                                break;
+                            case 2:
+                                delete = servidor.baixaUsuaris(in, out);
+                                alta = 2;
+                                update = 2;
+                                break;
+                            case 3:
+                                update = servidor.updateUsuaris(in, out);
+                                alta = 2;
+                                delete = 2;
+                                break;
+                            default:
+                                alta = 2;
+                                delete = 2;
+                                update = 2;
+                                break;
+                        }
+                            if (alta == 0) {
+                                ventana.imprimirDatos("Sha donat de alta el usuari corresponent");
+                            } else if (alta == 1) {
+                                ventana.imprimirDatos("No sha pogut donar de alta el usuari");
+                            }
+
+                            if (delete == 0) {
+                                ventana.imprimirDatos("Sha donat de baixa el usuari corresponent");
+                            } else if (delete == 1) {
+                                ventana.imprimirDatos("No sha pogut eliminar el usuari");
+                            }
+
+                            if (update == 0) {
+                                ventana.imprimirDatos("Sha modificat el usuari corresponent");
+                            } else if (update == 1) {
+                                ventana.imprimirDatos("No sha pogut modificar el usuari");
+                            }
+
+                            salir = true;
+                            break;
 
                         default:
                     }

@@ -103,31 +103,6 @@ public class Connexio {
         return rol;
     }
 
-    public void consultaSqlUsuaris(String consulta) throws SQLException {
-
-        int idUsuari;
-        String ulogin;
-        String upassword;
-
-        int tipusUsuari;
-        String email;
-        String telefon;
-        int idClient;
-
-        Statement stmt = conectar.createStatement();
-        String query = consulta;
-        ResultSet result = stmt.executeQuery(query);
-        while (result.next()) {
-            //idUsuari = result.getInt("id");
-            idClient = result.getInt("ID");
-            ulogin = result.getString("usuari");
-            upassword = result.getString("contrasenya");
-
-            System.out.println(idClient + "\t" + ulogin + "\t" + upassword);
-            // Leer registro
-        }
-
-    }
     
     public int crearUsuari (String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
         int correcte = 0;
@@ -151,6 +126,28 @@ public class Connexio {
         return correcte;
     }
     
+    
+    public int crearUsuariInicial (String usuari, String password, String rol) throws SQLException {
+        int correcte = 0;
+
+        String query =  "INSERT INTO user_data(" +
+                            "	usuari, contrasenya, rol)\n" +
+                            "	VALUES ('"+usuari+"', '"+password+"', '"+rol+"');";
+        Statement stmt = conectar.createStatement();
+
+        int result = stmt.executeUpdate(query);
+        
+        if (result > 0) {
+            System.out.println("Registre afegit.");
+            correcte = 1;
+        } else {
+            System.out.println("No sha afegit cap registre.");
+            correcte = 0;
+        }
+        
+        
+        return correcte;
+    }
     
     
     public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
