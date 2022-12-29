@@ -121,7 +121,7 @@ public class Servidor {
 
                 if (in.readBoolean() == true) {
                     out.writeBoolean(true);
-
+/*
                     //String id = in.readUTF();
                     String usuari = in.readUTF();
                     String password = in.readUTF();
@@ -140,14 +140,15 @@ public class Servidor {
                     String rol = in.readUTF();
 
                     correcte = connexio.crearUsuari(usuari, password, nom, cognom, correu, dni, tarjetaBancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codiPostal, rol);
-
-                    /*
+*/
+                    
                     String usuari = in.readUTF();
                     String password = in.readUTF();
                     String nom = in.readUTF();
                     String cognom = in.readUTF();
                     String correu = in.readUTF();
-                    String dni = in.readUTF();
+                    String doctype = in.readUTF();
+                    String numdoc = in.readUTF();
                    // String tarjetaBancaria = in.readUTF();
                     String carrer = in.readUTF();
                     //String municipi = in.readUTF();
@@ -157,8 +158,9 @@ public class Servidor {
                     String telefon = in.readUTF();
                     //String codiPostal = in.readUTF();
                     String rol = in.readUTF();
+                    String sex = in.readUTF();
 
-                    correcte = connexio.crearUsuari(usuari, password, nom, cognom, correu, dni, carrer, telefon, rol);*/
+                    correcte = connexio.crearUsuari(usuari, password, nom, cognom, correu, doctype, numdoc, carrer, telefon, rol, sex);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Alta dusuari correcta.");
                         System.out.println("Alta dusuari correcta.");

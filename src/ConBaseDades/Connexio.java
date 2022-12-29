@@ -104,12 +104,17 @@ public class Connexio {
     }
 
     
-    public int crearUsuari (String usuari, String password, String nom, String cognom, String correu, String dni, String tarjetaBancaria, String carrer, String municipi, String provincia, String nacionalitat, String iban, String telefon, String codiPostal, String rol) throws SQLException {
+    public int crearUsuari (String usuari, String password, String nom, String cognom, String correu, String doctype, String numdoc, String carrer, String telefon, String rol, String sex) throws SQLException {
         int correcte = 0;
-
+/*
         String query =  "INSERT INTO user_data(" +
                             "	usuari, contrasenya, nom, cognom, correu, dni, tarjeta_bancaria, carrer, municipi, provincia, nacionalitat, iban, telefon, codi_postal, rol)\n" +
-                            "	VALUES ('"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+dni+"', '"+tarjetaBancaria+"', '"+carrer+"', '"+municipi+"', '"+provincia+"', '"+nacionalitat+"', '"+iban+"', '"+telefon+"', '"+codiPostal+"', '"+rol+"');";
+                            "	VALUES ('"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+dni+"', '"+tarjetaBancaria+"', '"+carrer+"', '"+municipi+"', '"+provincia+"', '"+nacionalitat+"', '"+iban+"', '"+telefon+"', '"+codiPostal+"', '"+rol+"');";*/
+        String query =  "INSERT INTO user_data(" +
+                            "	usuari, contrasenya, nom, cognom, correu, dni, tarjeta_bancaria, carrer, telefon, rol, iban)\n" +
+                            "	VALUES ('"+usuari+"', '"+password+"', '"+nom+"', '"+cognom+"', '"+correu+"', '"+doctype+"', '"+numdoc+"', '"+carrer+"', '"+telefon+"', '"+rol+"', '"+sex+"');";
+        
+        //usuari, password, nom, cognom, correu, doctype, numdoc, carrer, telefon, rol, sex
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
