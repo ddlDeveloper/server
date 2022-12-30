@@ -346,8 +346,10 @@ public class Servidor {
                         ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
                     }
                 }
-
+                break;
             }
+            
+            
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }

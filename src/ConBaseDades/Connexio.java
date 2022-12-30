@@ -58,10 +58,10 @@ public class Connexio {
         return cont;
     }
     
-    public int clientValit(String dni) throws SQLException {
+    public int clientValit(String num_document) throws SQLException {
         int cont = 0;
 
-        String query = "select * from clients where dni = '" + dni + "'";
+        String query = "select * from clients where num_document = '" + num_document + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);
