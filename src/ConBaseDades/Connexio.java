@@ -73,10 +73,10 @@ public class Connexio {
         return cont;
     }
 
-    public int reservaValida(String numDoc) throws SQLException {
+    public int reservaValida(String dni) throws SQLException {
         int cont = 0;
 
-        String query = "select * from reserves where numDoc = '" + numDoc + "'";
+        String query = "select * from reserves where dni = '" + dni + "'";
         Statement stmt = conectar.createStatement();
 
         ResultSet result = stmt.executeQuery(query);
@@ -155,12 +155,12 @@ public class Connexio {
     }
     
     
-    public int crearReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
+    public int crearReserva (String name, String lastName, String docType, String dni, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
         int correcte = 0;
 
         String query =  "INSERT INTO reserves(\n" +
-"	name, \"lastName\", \"docType\", \"numDoc\", address, phone, email, acces, \"user\", password, sex)\n" +
-"	VALUES ('"+name+"', '"+lastName+"', '"+docType+"', '"+numDoc+"', '"+address+"', '"+phone+"', '"+email+"', '"+acces+"', '"+user+"', '"+password+"', '"+sex+"');";
+"	name, \"lastName\", \"docType\", \"dni\", address, phone, email, acces, \"user\", password, sex)\n" +
+"	VALUES ('"+name+"', '"+lastName+"', '"+docType+"', '"+dni+"', '"+address+"', '"+phone+"', '"+email+"', '"+acces+"', '"+user+"', '"+password+"', '"+sex+"');";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -181,7 +181,7 @@ public class Connexio {
         int correcte = 0;
 
         String query =  "INSERT INTO clients(\n" +
-"	nacionality, address, buscar, email, iban, idpersona, lastname, municipality, name, num_document, phone, postalcode, province)\n" +
+"	nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province)\n" +
 "	VALUES ('"+nacionality+"', '"+address+"', '"+email+"', '"+iban+"', '"+lastname+"', '"+municipality+"', '"+name+"', '"+num_document+"', '"+phone+"', '"+postalcode+"', '"+province+"');";
         Statement stmt = conectar.createStatement();
 
@@ -249,12 +249,12 @@ public class Connexio {
         return correcte;
     }  
 
-      public int eliminarReserva (String numDoc) throws SQLException {
+      public int eliminarReserva (String dni) throws SQLException {
         int correcte = 0;
 
-        if (reservaValida(numDoc) > 0) {
+        if (reservaValida(dni) > 0) {
         String query =  "DELETE FROM reserves \n" +
-"	WHERE numDoc LIKE '"+numDoc+"';";
+"	WHERE dni LIKE '"+dni+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -279,7 +279,7 @@ public class Connexio {
 
         String query =  "UPDATE user_data\n" +
 "	SET usuari='"+usuari+"', contrasenya='"+password+"', nom='"+nom+"', cognom='"+cognom+"', correu='"+correu+"', dni='"+dni+"', tarjeta_bancaria='"+tarjetaBancaria+"', carrer='"+carrer+"', municipi='"+municipi+"', provincia='"+provincia+"', nacionalitat='"+nacionalitat+"', iban='"+iban+"', telefon='"+telefon+"', codi_postal='"+codiPostal+"', rol='"+rol+"'\n" +
-"	WHERE dni ='"+dni+"');";
+"	WHERE dni ='"+dni+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);
@@ -318,12 +318,12 @@ public class Connexio {
         return correcte;
     }
       
-      public int updateReserva (String name, String lastName, String docType, String numDoc, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
+      public int updateReserva (String name, String lastName, String docType, String dni, String address, String phone, String email, String acces, String user, String password, String sex) throws SQLException {
         int correcte = 0;
 
         String query =  "UPDATE reserves\n" +
-"	SET name='"+name+"', \"lastName\"='"+lastName+"', \"docType\"='"+docType+"', \"numDoc\"='"+numDoc+"', address='"+address+"', phone='"+phone+"', email='"+email+"', acces='"+acces+"', \"user\"='"+user+"', password='"+password+"', sex='"+sex+"'\n" +
-"	WHERE numDoc = '"+numDoc+"';";
+"	SET name='"+name+"', \"lastName\"='"+lastName+"', \"docType\"='"+docType+"', \"dni\"='"+dni+"', address='"+address+"', phone='"+phone+"', email='"+email+"', acces='"+acces+"', \"user\"='"+user+"', password='"+password+"', sex='"+sex+"'\n" +
+"	WHERE dni = '"+dni+"';";
         Statement stmt = conectar.createStatement();
 
         int result = stmt.executeUpdate(query);

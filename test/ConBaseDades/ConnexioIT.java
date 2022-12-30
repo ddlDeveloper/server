@@ -314,7 +314,7 @@ public class ConnexioIT {
         String name = "4321";
         String lastName = "4321";
         String docType = "4321";
-        String numDoc = "4321";
+        String dni = "4321";
         String address = "4321";
         String phone = "4321";
         String email = "4321";
@@ -323,9 +323,9 @@ public class ConnexioIT {
         String password = "4321";
         String sex = "4321";
         Connexio instance = new Connexio();
-        int expResult = 0;
+        int expResult = 1;
         instance.establirConnexio();
-        int result = instance.crearReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex);
+        int result = instance.crearReserva(name, lastName, docType, dni, address, phone, email, acces, user, password, sex);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -369,10 +369,10 @@ public class ConnexioIT {
     @Test
     public void testEliminarUsuari() throws Exception {
         System.out.println("eliminarUsuari");
-        String usuari = "3";
-        String password = "3";
+        String usuari = "1212";
+        String password = "1212";
         Connexio instance = new Connexio();
-        int expResult = 1;
+        int expResult = 0;
         instance.establirConnexio();
         int result = instance.eliminarUsuari(usuari, password);
         assertEquals(expResult, result);
@@ -427,12 +427,12 @@ public class ConnexioIT {
     @Test
     public void testUpdateUsuari() throws Exception {
         System.out.println("updateUsuari");
-        String usuari = "5";
-        String password = "5";
+        String usuari = "2";
+        String password = "2";
         String nom = "21";
         String cognom = "12";
         String correu = "22";
-        String dni = "31";
+        String dni = "2";
         String tarjetaBancaria = "12";
         String carrer = "31";
         String municipi = "42";
@@ -493,7 +493,7 @@ public class ConnexioIT {
         String name = "23";
         String lastName = "23";
         String docType = "14";
-        String numDoc = "23";
+        String dni = "23";
         String address = "52";
         String phone = "32";
         String email = "23";
@@ -502,9 +502,9 @@ public class ConnexioIT {
         String password = "13";
         String sex = "53";
         Connexio instance = new Connexio();
-        int expResult = 0;
+        int expResult = 1;
         instance.establirConnexio();
-        int result = instance.updateReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex);
+        int result = instance.updateReserva(name, lastName, docType, dni, address, phone, email, acces, user, password, sex);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
