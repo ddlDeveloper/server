@@ -346,7 +346,6 @@ public class Servidor {
                         ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
                     }
                 }
-                break;
             }
             
             
