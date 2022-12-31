@@ -99,7 +99,7 @@ public class ConnexioIT {
     @Test
     public void testClientValit() throws Exception {
         System.out.println("clientValit");
-        String num_document = "8";
+        String num_document = "5";
         Connexio instance = new Connexio();
         int expResult = 1;
         instance.establirConnexio();
@@ -131,7 +131,7 @@ public class ConnexioIT {
     @Test
     public void testClientBuit() throws Exception {
         System.out.println("clientValit");
-        String num_document = "0";
+        String num_document = "";
         Connexio instance = new Connexio();
         int expResult = 0;
         instance.establirConnexio();
@@ -151,7 +151,7 @@ public class ConnexioIT {
     @Test
     public void testReservaValida() throws Exception {
         System.out.println("reservaValida");
-        String numDoc = "23";
+        String numDoc = "8";
         Connexio instance = new Connexio();
         int expResult = 1;
         instance.establirConnexio();
@@ -289,9 +289,9 @@ public class ConnexioIT {
     @Test
     public void testCrearUsuariInicial() throws Exception {
         System.out.println("crearUsuariInicial");
-        String usuari = "12345";
-        String password = "12345";
-        String rol = "12345";
+        String usuari = "1534";
+        String password = "1534";
+        String rol = "1534";
         Connexio instance = new Connexio();
         int expResult = 1;
         instance.establirConnexio();
@@ -369,10 +369,10 @@ public class ConnexioIT {
     @Test
     public void testEliminarUsuari() throws Exception {
         System.out.println("eliminarUsuari");
-        String usuari = "1212";
-        String password = "1212";
+        String usuari = "3";
+        String password = "3";
         Connexio instance = new Connexio();
-        int expResult = 0;
+        int expResult = 1;
         instance.establirConnexio();
         int result = instance.eliminarUsuari(usuari, password);
         assertEquals(expResult, result);
@@ -389,9 +389,9 @@ public class ConnexioIT {
     @Test
     public void testEliminarClient() throws Exception {
         System.out.println("eliminarClient");
-        String num_document = "4";
+        String num_document = "6";
         Connexio instance = new Connexio();
-        int expResult = 0;
+        int expResult = 1;
         instance.establirConnexio();
         int result = instance.eliminarClient(num_document);
         assertEquals(expResult, result);
@@ -408,9 +408,9 @@ public class ConnexioIT {
     @Test
     public void testEliminarReserva() throws Exception {
         System.out.println("eliminarReserva");
-        String numDoc = "111";
+        String numDoc = "9";
         Connexio instance = new Connexio();
-        int expResult = 0;
+        int expResult = 1;
         instance.establirConnexio();
         int result = instance.eliminarReserva(numDoc);
         assertEquals(expResult, result);
@@ -427,8 +427,8 @@ public class ConnexioIT {
     @Test
     public void testUpdateUsuari() throws Exception {
         System.out.println("updateUsuari");
-        String usuari = "2";
-        String password = "2";
+        String usuari = "43";
+        String password = "43";
         String nom = "21";
         String cognom = "12";
         String correu = "22";
@@ -468,7 +468,7 @@ public class ConnexioIT {
         String lastname = "42";
         String municipality = "21";
         String name = "32";
-        String num_document = "8";
+        String num_document = "5";
         String phone = "42";
         String postalcode = "12";
         String province = "42";
@@ -493,7 +493,7 @@ public class ConnexioIT {
         String name = "23";
         String lastName = "23";
         String docType = "14";
-        String dni = "23";
+        String dni = "8";
         String address = "52";
         String phone = "32";
         String email = "23";
