@@ -200,7 +200,7 @@ public class Servidor {
                     String user = in.readUTF();
                     String password = in.readUTF();
                     String sex = in.readUTF();
-                    String dni = in.readUTF();
+                    //String dni = in.readUTF();
 
                     correcte = connexio.crearReserva(name, lastName, docType, numDoc, address, phone, email, acces, user, password, sex);
                     if (correcte > 0) {
@@ -231,21 +231,22 @@ public class Servidor {
                 if (in.readBoolean() == true) {
                     out.writeBoolean(true);
 
-                    String nacionality = in.readUTF();
-                    String address = in.readUTF();
-                    String buscar = in.readUTF();
-                    String email = in.readUTF();
-                    String iban = in.readUTF();
-                    String idpersona = in.readUTF();
-                    String lastname = in.readUTF();
-                    String municipality = in.readUTF();
                     String name = in.readUTF();
+                    String lastname = in.readUTF();
+                    String email = in.readUTF();
+                    String doctype = in.readUTF();
                     String num_document = in.readUTF();
-                    String phone = in.readUTF();
+                    String address = in.readUTF();
+                    String municipality = in.readUTF();
                     String postalcode = in.readUTF();
                     String province = in.readUTF();
-
-                    correcte = connexio.crearClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
+                    String nacionality = in.readUTF();
+                    String phone = in.readUTF();
+                    String iban = in.readUTF();
+                    
+                    //String buscar = in.readUTF();
+                    
+                    correcte = connexio.crearClient(name, lastname, email, doctype, num_document, address, municipality, postalcode, province, nacionality, phone, iban);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Alta de client correcta.");
                         System.out.println("Alta de client correcta.");
@@ -291,7 +292,9 @@ public class Servidor {
                 //format LOGIN,usuari,contrasenya,id_conn
                 String user = in.readUTF();
                 String passDesenCrypt = in.readUTF();
+                ventana.imprimirDatos("Password del client: " + passDesenCrypt);
                 String password = Desencriptar(passDesenCrypt);
+                ventana.imprimirDatos("Password desencriptat: " + password);
                 int login = in.readInt();
                 ventana.imprimirDatos("Sha intentat loguejar " + user + " amb el password " + password + ".");
                 //Descompondre la resposta del client, en un array
@@ -346,9 +349,8 @@ public class Servidor {
                         ventana.imprimirDatos("Usuari o contrasenya incorrecta.");
                     }
                 }
+
             }
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -632,12 +634,13 @@ public class Servidor {
                     String lastname = in.readUTF();
                     String municipality = in.readUTF();
                     String name = in.readUTF();
+                    String dni = in.readUTF();
                     String num_document = in.readUTF();
                     String phone = in.readUTF();
                     String postalcode = in.readUTF();
                     String province = in.readUTF();
 
-                    correcte = connexio.updateClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
+                    correcte = connexio.updateClient(nacionality, address, email, iban, lastname, municipality, name, dni, num_document, phone, postalcode, province);
                     if (correcte > 0) {
                         ventana.imprimirDatos("Modificacio de client correcta.");
                         System.out.println("Modificacio de client correcta.");
@@ -655,5 +658,7 @@ public class Servidor {
         }
         return correcte;
     }
+    
+    
 
 }

@@ -347,6 +347,7 @@ public class ConnexioIT {
         String lastname = "1212";
         String municipality = "1212";
         String name = "1212";
+        String dni = "1212";
         String num_document = "1212";
         String phone = "1212";
         String postalcode = "1212";
@@ -354,7 +355,7 @@ public class ConnexioIT {
         Connexio instance = new Connexio();
         int expResult = 1;
         instance.establirConnexio();
-        int result = instance.crearClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
+        int result = instance.crearClient(nacionality, address, email, iban, lastname, municipality, name, dni, num_document, phone, postalcode, province);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -468,6 +469,7 @@ public class ConnexioIT {
         String lastname = "42";
         String municipality = "21";
         String name = "32";
+        String dni = "5";
         String num_document = "5";
         String phone = "42";
         String postalcode = "12";
@@ -475,7 +477,7 @@ public class ConnexioIT {
         Connexio instance = new Connexio();
         int expResult = 1;
         instance.establirConnexio();
-        int result = instance.updateClient(nacionality, address, email, iban, lastname, municipality, name, num_document, phone, postalcode, province);
+        int result = instance.updateClient(nacionality, address, email, iban, lastname, municipality, name, dni, num_document, phone, postalcode, province);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
