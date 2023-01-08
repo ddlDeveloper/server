@@ -10,8 +10,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Client;
+import models.Reserve;
+import models.User;
 
 /**
  *
@@ -95,28 +99,38 @@ public class HilosServidor extends Thread {
 
                         case 2:
                             delad = in.readInt();
-                        switch (delad) {
-                            case 1:
-                                alta = servidor.altaClients(in, out);
-                                delete = 2;
-                                update = 2;
-                                break;
-                            case 2:
-                                delete = servidor.baixaClients(in, out);
-                                alta = 2;
-                                update = 2;
-                                break;
-                            case 3:
-                                update = servidor.updateClients(in, out); //update
-                                alta = 2;
-                                delete = 2;
-                                break;
-                            default:
-                                alta = 2;
-                                delete = 2;
-                                update = 2;
-                                break;
-                        }
+                            switch (delad) {
+                                case 1:
+                                    alta = servidor.altaClients(in, out);
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                case 2:
+                                    delete = servidor.baixaClients(in, out);
+                                    alta = 2;
+                                    update = 2;
+                                    break;
+                                case 3:
+                                    update = servidor.updateClients(in, out); //update
+                                    alta = 2;
+                                    delete = 2;
+                                    break;
+                                case 4:
+                                    ArrayList<Client> llista = connexio.clientRead();
+                                    out.writeInt(llista.size());
+                                    for (Client list : llista) {
+                                        out.writeUTF(list.toString());
+                                    }
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                default:
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                            }
                             if (alta == 0) {
                                 ventana.imprimirDatos("Sha donat de alta el client corresponent");
                             } else if (alta == 1) {
@@ -138,31 +152,40 @@ public class HilosServidor extends Thread {
                             salir = true;
                             break;
 
-
                         case 3:
                             delad = in.readInt();
-                        switch (delad) {
-                            case 1:
-                                alta = servidor.altaReserves(in, out);
-                                delete = 2;
-                                update = 2;
-                                break;
-                            case 2:
-                                delete = servidor.baixaReserves(in, out);
-                                alta = 2;
-                                update = 2;
-                                break;
-                            case 3:
-                                update = servidor.updateReserves(in, out);
-                                alta = 2;
-                                delete = 2;
-                                break;
-                            default:
-                                alta = 2;
-                                delete = 2;
-                                update = 2;
-                                break;
-                        }
+                            switch (delad) {
+                                case 1:
+                                    alta = servidor.altaReserves(in, out);
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                case 2:
+                                    delete = servidor.baixaReserves(in, out);
+                                    alta = 2;
+                                    update = 2;
+                                    break;
+                                case 3:
+                                    update = servidor.updateReserves(in, out);
+                                    alta = 2;
+                                    delete = 2;
+                                    break;
+                                case 4:
+                                    ArrayList<Reserve> llista = connexio.reserveRead();
+                                    out.writeInt(llista.size());
+                                    for (Reserve list : llista) {
+                                        out.writeUTF(list.toString());
+                                    }
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                default:
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                            }
                             if (alta == 0) {
                                 ventana.imprimirDatos("Sha donat de alta la reserva corresponent");
                             } else if (alta == 1) {
@@ -186,28 +209,38 @@ public class HilosServidor extends Thread {
 
                         case 4:
                             delad = in.readInt();
-                        switch (delad) {
-                            case 1:
-                                alta = servidor.altaUsuaris(in, out);
-                                delete = 2;
-                                update = 2;
-                                break;
-                            case 2:
-                                delete = servidor.baixaUsuaris(in, out);
-                                alta = 2;
-                                update = 2;
-                                break;
-                            case 3:
-                                update = servidor.updateUsuaris(in, out);
-                                alta = 2;
-                                delete = 2;
-                                break;
-                            default:
-                                alta = 2;
-                                delete = 2;
-                                update = 2;
-                                break;
-                        }
+                            switch (delad) {
+                                case 1:
+                                    alta = servidor.altaUsuaris(in, out);
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                case 2:
+                                    delete = servidor.baixaUsuaris(in, out);
+                                    alta = 2;
+                                    update = 2;
+                                    break;
+                                case 3:
+                                    update = servidor.updateUsuaris(in, out);
+                                    alta = 2;
+                                    delete = 2;
+                                    break;
+                                case 4:
+                                    ArrayList<User> llista = connexio.userRead();
+                                    out.writeInt(llista.size());
+                                    for (User list : llista) {
+                                        out.writeUTF(list.toString());
+                                    }
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                                default:
+                                    alta = 2;
+                                    delete = 2;
+                                    update = 2;
+                                    break;
+                            }
                             if (alta == 0) {
                                 ventana.imprimirDatos("Sha donat de alta el usuari corresponent");
                             } else if (alta == 1) {
